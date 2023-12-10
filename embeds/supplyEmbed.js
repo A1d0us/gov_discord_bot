@@ -1,10 +1,25 @@
+const {SupplyStatus} = require("../constants/SupplyStatus");
 module.exports = {
-  supplyEmbed: (type, faction, size, time, authorId, imageLink, status = null, color = 0xfdda0d) => {
-    let statusField = status ? [{
-      name: "Статус",
-      value: status,
-      inline: true
-    }] : [];
+  supplyEmbed: (type, faction, size, time, authorId, imageLink, govEmployeeId, status = null, color = 0xfdda0d, reason = null) => {
+    let statusFields = status ? [
+      {
+        name: "Статус",
+        value: status,
+        inline: true
+      },
+      {
+        name: "Сотрудник GOV",
+        value: `<@${govEmployeeId}>`,
+        inline: true,
+      },
+    ] : [];
+    if (status === SupplyStatus.REJECTED) {
+      statusFields = [...statusFields, {
+        name: "Причина отказа",
+        value: reason,
+        inline: true
+      }]
+    }
     return {
       title: "Заказ поставки " + type,
       color: color,
@@ -29,7 +44,7 @@ module.exports = {
           value: `<@${authorId}>`,
           inline: true
         },
-        ...statusField
+        ...statusFields
       ],
       image: {
         url: imageLink
