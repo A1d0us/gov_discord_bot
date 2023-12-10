@@ -79,7 +79,7 @@ module.exports = {
               components: [row]
             });
             await supply.update({message_id: supplyMessage.id});
-            message.author.send({embeds: [textEmbed("Заказ отправлен!", "Для смены времени используйте команду !ctime время")]});
+            message.author.send({embeds: [textEmbed("Заказ отправлен!", "Для смены времени используйте команду !ctime (Время)")]});
           }
         } else {
           message.author.send({embeds: [textEmbed("Не прикреплён скриншот склада!")]});

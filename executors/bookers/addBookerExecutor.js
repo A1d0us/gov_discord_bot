@@ -29,7 +29,9 @@ module.exports = {
 
       await updateBookersList(client);
 
-      await employee.send({embeds: [textEmbed("Вы были добавлены в список поставки " + supplyType)]});
+      let commandDescription = `Для заказа поставки - !${supplyType} (Фракция) (Количество) (Время)\n` +
+        `Пример: !${supplyType} LSPD 1000 16:50`;
+      await employee.send({embeds: [textEmbed("Вы были добавлены в список поставки " + supplyType, commandDescription)]});
       await interaction.editReply({content: "Сотрудник добавлен!"});
     } catch (error) {
       logger.error(error);
