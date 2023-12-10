@@ -6,14 +6,15 @@ const {bookersListEmbed} = require("./embeds/bookersListEmbed");
 const {logger} = require("./logs/logger");
 const {post} = require("axios");
 dotenv.config();
+const fs = require("fs");
 
 module.exports = {
   async updateBookersList(client) {
     let channel = await client.channels.fetch(process.env.BOOKERS_LIST_CHANNEL_ID);
-    let listMessageId = process.env.BOOKERS_LIST_ID;
-    console.log(listMessageId);
-    if (listMessageId) {
-      let bookersList = await channel.messages.cache.get(listMessageId);
+    let jsonConfig = fs.readFileSync('config.json', { encoding: 'utf8', flag: 'r' });
+    let config = JSON.parse(jsonConfig);
+    if (config.bookersListId) {
+      let bookersList = await channel.messages.cache.get(config.bookersListId);
       let emsEmployees = await Booker.findAll({
         where: {
           supply_type: SupplyType.EMS
@@ -25,7 +26,9 @@ module.exports = {
         }
       });
 
-      await bookersList.edit({embeds: [bookersListEmbed(emsEmployees, armyEmployees)]});
+      let message = await bookersList.edit({embeds: [bookersListEmbed(emsEmployees, armyEmployees)]});
+      config.bookersListId = message.id;
+      fs.writeFileSync('config.json', JSON.stringify(config));
     } else  {
       let emsEmployees = await Booker.findAll({
         where: {
@@ -38,8 +41,9 @@ module.exports = {
         }
       });
 
-      let bookersList = await channel.send({embeds: [bookersListEmbed(emsEmployees, armyEmployees)]});
-      process.env.BOOKERS_LIST_ID = bookersList.id;
+      let message = await channel.send({embeds: [bookersListEmbed(emsEmployees, armyEmployees)]});
+      config.bookersListId = message.id;
+      fs.writeFileSync('config.json', JSON.stringify(config));
     }
   },
   upload: async (url, name) => {
