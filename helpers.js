@@ -27,6 +27,11 @@ module.exports = {
     if (!!message) {
       await message.edit({embeds: [bookersListEmbed(emsEmployees, armyEmployees)]});
     } else  {
+      let fetched;
+      do {
+        fetched = await channel.messages.fetch({limit: 100});
+        await channel.bulkDelete(fetched);
+      } while(fetched.size >= 2);
       await channel.send({embeds: [bookersListEmbed(emsEmployees, armyEmployees)]});
     }
   },
