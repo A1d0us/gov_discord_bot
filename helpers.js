@@ -11,10 +11,8 @@ const fs = require("fs");
 module.exports = {
   async updateBookersList(client) {
     let channel = await client.channels.fetch(process.env.BOOKERS_LIST_CHANNEL_ID);
-    let jsonConfig = fs.readFileSync('config.json', { encoding: 'utf8', flag: 'r' });
-    let config = JSON.parse(jsonConfig);
-    if (config.bookersListId) {
-      let bookersList = await channel.messages.cache.get(config.bookersListId);
+    let message = await channel.messages.cache.first();
+    if (!!message) {
       let emsEmployees = await Booker.findAll({
         where: {
           supply_type: SupplyType.EMS
@@ -26,9 +24,7 @@ module.exports = {
         }
       });
 
-      let message = await bookersList.edit({embeds: [bookersListEmbed(emsEmployees, armyEmployees)]});
-      config.bookersListId = message.id;
-      fs.writeFileSync('config.json', JSON.stringify(config));
+      await message.edit({embeds: [bookersListEmbed(emsEmployees, armyEmployees)]});
     } else  {
       let emsEmployees = await Booker.findAll({
         where: {
@@ -41,9 +37,7 @@ module.exports = {
         }
       });
 
-      let message = await channel.send({embeds: [bookersListEmbed(emsEmployees, armyEmployees)]});
-      config.bookersListId = message.id;
-      fs.writeFileSync('config.json', JSON.stringify(config));
+      await channel.send({embeds: [bookersListEmbed(emsEmployees, armyEmployees)]});
     }
   },
   upload: async (url, name) => {

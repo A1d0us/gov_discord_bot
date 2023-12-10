@@ -4,4 +4,3 @@
 /.env
 /logs/error.log
 /temp.js
-/config.json
