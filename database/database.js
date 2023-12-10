@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const {logger} = require("../logs/logger");
 const {FactionType} = require("../constants/FactionType");
 const {SupplyType} = require("../constants/SupplyType");
+const {SupplyStatus} = require("../constants/SupplyStatus");
 dotenv.config();
 
 const sequelize = new Sequelize(
@@ -62,6 +63,10 @@ const Supply = sequelize.define('supplies', {
   is_reviewed: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
+  },
+  status: {
+    type: DataTypes.ENUM,
+    values: Object.values(SupplyStatus)
   }
 }, {
   indexes: [

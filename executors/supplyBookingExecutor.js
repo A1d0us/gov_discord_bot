@@ -6,6 +6,7 @@ const {textEmbed} = require("../embeds/textEmbed");
 const dotenv = require("dotenv");
 const {FactionType} = require("../constants/FactionType");
 const {ButtonBuilder, ButtonStyle, ActionRowBuilder} = require("discord.js");
+const {SupplyStatus} = require("../constants/SupplyStatus");
 dotenv.config();
 
 module.exports = {
@@ -55,6 +56,7 @@ module.exports = {
               time,
               author_id: message.author.id,
               screenshot_url: imageLink,
+              status: SupplyStatus.CREATED
             });
 
             const confirm = new ButtonBuilder()

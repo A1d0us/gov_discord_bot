@@ -1,8 +1,13 @@
 module.exports = {
-  supplyEmbed: (type, faction, size, time, authorId, imageLink) => {
+  supplyEmbed: (type, faction, size, time, authorId, imageLink, status = null, color = 0xfdda0d) => {
+    let statusField = status ? [{
+      name: "Статус",
+      value: status,
+      inline: true
+    }] : [];
     return {
       title: "Заказ поставки " + type,
-      color: 0xffffff,
+      color: color,
       fields: [
         {
           name: "Фракция",
@@ -24,6 +29,7 @@ module.exports = {
           value: `<@${authorId}>`,
           inline: true
         },
+        ...statusField
       ],
       image: {
         url: imageLink

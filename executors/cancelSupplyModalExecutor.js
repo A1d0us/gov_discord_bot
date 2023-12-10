@@ -2,6 +2,7 @@ const {logger} = require("../logs/logger");
 const {Supply} = require("../database/database");
 const {textEmbed} = require("../embeds/textEmbed");
 const {supplyEmbed} = require("../embeds/supplyEmbed");
+const {SupplyStatus} = require("../constants/SupplyStatus");
 
 module.exports = {
   cancelSupplyModalExecutor: async (supplyId, interaction, client) => {
@@ -15,7 +16,8 @@ module.exports = {
 
       await supply.update({
         is_reviewed: true,
-        reviewer_id: interaction.user.id
+        reviewer_id: interaction.user.id,
+        status: SupplyStatus.REJECTED
       });
 
       let reason = interaction.fields.getTextInputValue('reason');
@@ -24,7 +26,7 @@ module.exports = {
       let message = await channel.messages.cache.get(supply.message_id);
       await message.edit({
         content: `<@&${process.env.SUPPLIES_TAG_ROLE_ID}>`,
-        embeds: [supplyEmbed(supply.type, supply.faction, supply.size, supply.time.slice(0, 5), supply.author_id, supply.screenshot_url)],
+        embeds: [supplyEmbed(supply.type, supply.faction, supply.size, supply.time.slice(0, 5), supply.author_id, supply.screenshot_url, supply.status ,0xc41e3a)],
         components: []
       });
       await interaction.editReply({content: "Поставка отклонена!"});
