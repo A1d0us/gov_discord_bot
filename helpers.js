@@ -10,8 +10,10 @@ dotenv.config();
 module.exports = {
   async updateBookersList(client) {
     let channel = await client.channels.fetch(process.env.BOOKERS_LIST_CHANNEL_ID);
-    if (process.env.BOOKERS_LIST_ID) {
-      let bookersList = await channel.messages.cache.get(process.env.BOOKERS_LIST_ID);
+    let listMessageId = process.env.BOOKERS_LIST_ID;
+    console.log(listMessageId);
+    if (listMessageId) {
+      let bookersList = await channel.messages.cache.get(listMessageId);
       let emsEmployees = await Booker.findAll({
         where: {
           supply_type: SupplyType.EMS
