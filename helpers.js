@@ -11,32 +11,20 @@ const fs = require("fs");
 module.exports = {
   async updateBookersList(client) {
     let channel = await client.channels.fetch(process.env.BOOKERS_LIST_CHANNEL_ID);
+    let emsEmployees = await Booker.findAll({
+      where: {
+        supply_type: SupplyType.EMS
+      }
+    });
+    let armyEmployees = await Booker.findAll({
+      where: {
+        supply_type: SupplyType.ARMY
+      }
+    });
     let message = await channel.messages.cache.first();
     if (!!message) {
-      let emsEmployees = await Booker.findAll({
-        where: {
-          supply_type: SupplyType.EMS
-        }
-      });
-      let armyEmployees = await Booker.findAll({
-        where: {
-          supply_type: SupplyType.ARMY
-        }
-      });
-
       await message.edit({embeds: [bookersListEmbed(emsEmployees, armyEmployees)]});
     } else  {
-      let emsEmployees = await Booker.findAll({
-        where: {
-          supply_type: SupplyType.EMS
-        }
-      });
-      let armyEmployees = await Booker.findAll({
-        where: {
-          supply_type: SupplyType.ARMY
-        }
-      });
-
       await channel.send({embeds: [bookersListEmbed(emsEmployees, armyEmployees)]});
     }
   },
