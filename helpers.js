@@ -6,6 +6,7 @@ const {bookersListEmbed} = require("./embeds/bookersListEmbed");
 const {logger} = require("./logs/logger");
 const {post} = require("axios");
 dotenv.config();
+const {MessageType} = require("discord.js");
 const fs = require("fs");
 
 module.exports = {
@@ -21,7 +22,8 @@ module.exports = {
         supply_type: SupplyType.ARMY
       }
     });
-    let message = await channel.messages.cache.first();
+    let messages = channel.messages.cache.filter(message => message.type !== MessageType.ChatInputCommand);
+    let message = messages.first();
     if (!!message) {
       await message.edit({embeds: [bookersListEmbed(emsEmployees, armyEmployees)]});
     } else  {
