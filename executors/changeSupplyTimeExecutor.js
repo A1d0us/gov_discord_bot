@@ -39,7 +39,7 @@ module.exports = {
         await latestSupply.update({time: newTime});
         await supplyMessage.edit({
           content: `<@&${process.env.SUPPLIES_TAG_ROLE_ID}>`,
-          embeds: [supplyEmbed(latestSupply.type, latestSupply.faction, latestSupply.size, latestSupply.time.slice(0, 5), latestSupply.author_id, latestSupply.screenshot_url)],
+          embeds: [supplyEmbed(latestSupply)],
         });
         message.author.send({embeds: [textEmbed("Время поставки было изменено!")]});
       }

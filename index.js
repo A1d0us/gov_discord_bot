@@ -12,6 +12,7 @@ const {confirmSupplyExecutor} = require("./executors/confirmSupplyExecutor");
 const {cancelSupplyExecutor} = require("./executors/cancelSupplyExecutor");
 const {changeSupplyTimeExecutor} = require("./executors/changeSupplyTimeExecutor");
 const {cancelSupplyModalExecutor} = require("./executors/cancelSupplyModalExecutor");
+const {cancelSupplyByMessageExecutor} = require("./executors/cancelSupplyByMessageExecutor");
 dotenv.config();
 
 const client = new Client({
@@ -149,6 +150,7 @@ client.on(Events.MessageCreate, async message => {
   if (message.author.bot) return;
   await supplyBookingExecutor(message, client);
   await changeSupplyTimeExecutor(message, client);
+  await cancelSupplyByMessageExecutor(message, client);
 });
 
 client.on(Events.InteractionCreate, async interaction => {

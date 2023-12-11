@@ -1,19 +1,19 @@
 const {SupplyStatus} = require("../constants/SupplyStatus");
 module.exports = {
-  supplyEmbed: (type, faction, size, time, authorId, imageLink, govEmployeeId, status = null, color = 0xfdda0d, reason = null) => {
-    let statusFields = status ? [
+  supplyEmbed: (supply, color = 0xfdda0d, reason = null) => {
+    let statusFields = supply.status !== SupplyStatus.CREATED ? [
       {
         name: "Статус",
-        value: status,
+        value: supply.status,
         inline: true
       },
       {
         name: "Сотрудник GOV",
-        value: `<@${govEmployeeId}>`,
+        value: supply.reviewer_id ? `<@${supply.reviewer_id}>` : '-',
         inline: true,
       },
     ] : [];
-    if (status === SupplyStatus.REJECTED) {
+    if (supply.status === SupplyStatus.REJECTED) {
       statusFields = [...statusFields, {
         name: "Причина отказа",
         value: reason,
@@ -21,33 +21,38 @@ module.exports = {
       }]
     }
     return {
-      title: "Заказ поставки " + type,
+      title: "Заказ поставки " + supply.type,
       color: color,
       fields: [
         {
+          name: "Номер",
+          value: supply.id,
+          inline: true
+        },
+        {
           name: "Фракция",
-          value: faction,
+          value: supply.faction,
           inline: true
         },
         {
           name: "Размер",
-          value: size,
+          value: supply.size,
           inline: true
         },
         {
           name: "Время заказа",
-          value: time,
+          value: supply.time.slice(0, 5),
           inline: true
         },
         {
           name: "Автор заказа",
-          value: `<@${authorId}>`,
+          value: `<@${supply.author_id}>`,
           inline: true
         },
         ...statusFields
       ],
       image: {
-        url: imageLink
+        url: supply.screenshot_url
       }
     };
   }

@@ -13,7 +13,7 @@ module.exports = {
         .setDescription('Добавить человека в список')
         .addStringOption(option =>
           option
-            .setName('тип')
+            .setName('type')
             .setDescription('Тип поставки')
             .setRequired(true)
             .addChoices(
@@ -24,7 +24,7 @@ module.exports = {
         .addUserOption(
           option =>
             option
-              .setName('сотрудник')
+              .setName('employee')
               .setDescription('Тег сотрудника')
               .setRequired(true)
         )
@@ -36,7 +36,7 @@ module.exports = {
         .addUserOption(
           option =>
             option
-              .setName('сотрудник')
+              .setName('employee')
               .setDescription('Тег сотрудника')
               .setRequired(true)
         )

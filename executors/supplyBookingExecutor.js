@@ -75,7 +75,7 @@ module.exports = {
             let channel = await client.channels.fetch(process.env.SUPPLIES_LIST_CHANNEL_ID);
             let supplyMessage = await channel.send({
               content: `<@&${process.env.SUPPLIES_TAG_ROLE_ID}>`,
-              embeds: [supplyEmbed(supplyType, faction, size, time, message.author.id, imageLink)],
+              embeds: [supplyEmbed(supply)],
               components: [row]
             });
             await supply.update({message_id: supplyMessage.id});

@@ -9,8 +9,8 @@ module.exports = {
     try {
       await interaction.deferReply({ephemeral: true});
 
-      let employee = interaction.options.getUser('сотрудник');
-      let supplyType = interaction.options.getString('тип');
+      let employee = interaction.options.getUser('employee');
+      let supplyType = interaction.options.getString('type');
 
       let record = await Booker.findOne({
         where: {

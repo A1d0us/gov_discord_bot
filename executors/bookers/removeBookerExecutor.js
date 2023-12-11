@@ -7,7 +7,7 @@ module.exports = {
     try {
       await interaction.deferReply({ephemeral: true});
 
-      let employee = interaction.options.getUser('сотрудник');
+      let employee = interaction.options.getUser('employee');
 
       await Booker.destroy({
         where: {

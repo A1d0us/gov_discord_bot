@@ -67,6 +67,10 @@ const Supply = sequelize.define('supplies', {
   status: {
     type: DataTypes.ENUM,
     values: Object.values(SupplyStatus)
+  },
+  is_finished: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
   }
 }, {
   indexes: [

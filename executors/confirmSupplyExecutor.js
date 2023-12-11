@@ -18,7 +18,9 @@ module.exports = {
       let splitSupplyTime = supply.time.split(':');
       let splitLocalTime = time.split(':');
 
-      if (splitSupplyTime[0] === splitLocalTime[0] && Math.abs(splitSupplyTime[1] - splitLocalTime[1]) <= 5) {
+      if (+splitSupplyTime[0] < +splitLocalTime[0] ||
+        (splitSupplyTime[0] === splitLocalTime[0] &&
+          (Math.abs(splitSupplyTime[1] - splitLocalTime[1]) <= 5) || splitSupplyTime[1] < splitLocalTime[1])) {
         await supply.update({
           is_reviewed: true,
           reviewer_id: interaction.user.id,
@@ -34,11 +36,11 @@ module.exports = {
         let message = await channel.messages.cache.get(supply.message_id);
         await message.edit({
           content: `<@&${process.env.SUPPLIES_TAG_ROLE_ID}>`,
-          embeds: [supplyEmbed(supply.type, supply.faction, supply.size, supply.time.slice(0, 5), supply.author_id, supply.screenshot_url, interaction.user.id, supply.status, 0x228b22)],
+          embeds: [supplyEmbed(supply, 0x228b22)],
           components: []
         });
 
-        await member.user.send({embeds: [textEmbed("Поставка была заказана!", null, 0x228b22)]});
+        await member.user.send({embeds: [textEmbed("Поставка была одобрена!", null, 0x228b22)]});
 
         await interaction.editReply({content: "Поставка одобрена!"});
       } else {

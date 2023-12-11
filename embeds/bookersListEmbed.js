@@ -20,14 +20,6 @@ module.exports = {
         }
       ]
     };
-    // return new EmbedBuilder()
-    //   .setColor(0xffffff)
-    //   .setTitle('Список сотрудников для заказа поставок')
-    //   .addFields(
-    //     {name: "EMS", value: getEmployeesListString(emsEmployees)},
-    //     {name: "\u200B", value: "\u200B"},
-    //     {name: "ARMY", value: getEmployeesListString(armyEmployees)},
-    //   )
   },
 };
 
